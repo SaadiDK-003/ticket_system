@@ -27,7 +27,7 @@ $token = mysqli_fetch_object($token_Q);
                     <div id="tabs-buttons" class="col-12 d-flex align-items-center justify-content-center gap-5">
                         <a href="#!" class="btn btn-success w-15">Add Client</a>
                         <a href="#!" class="btn btn-primary w-15">Add Categories</a>
-                        <a href="<?= SITE_URL ?>/register.php?token=<?= $token->reg_token ?>" class="btn btn-secondary"><i class="fas fa-user-plus"></i></a>
+                        <a href="<?= SITE_URL ?>/register.php?token=<?= $token->reg_token ?>" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="click to copy registration Link" data-bs-placement="right"><i class="fas fa-user-plus"></i></a>
                     </div>
                 </div>
             </div>

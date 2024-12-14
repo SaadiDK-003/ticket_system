@@ -7,8 +7,12 @@
     // Success Toast
     const toastS = document.querySelector('.toast-success');
     const toastSuccess = bootstrap.Toast.getOrCreateInstance(toastS);
-    
+
     // Danger Toast
     const toastD = document.querySelector('.toast-danger');
     const toastDanger = bootstrap.Toast.getOrCreateInstance(toastD);
+
+    // ToolTips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
