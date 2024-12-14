@@ -1,6 +1,7 @@
 <?php
 session_start();
-$config_path = $_SERVER['DOCUMENT_ROOT'] . '/ticket_system/';
+$folder_name = 'ticket_system/';
+$config_path = $_SERVER['DOCUMENT_ROOT'] . '/' . $folder_name;
 require_once '' . $config_path . 'config.php';
 $db = mysqli_connect(HOST, DB_USER, DB_PWD, DB_NAME);
 include_once 'functions.php';
