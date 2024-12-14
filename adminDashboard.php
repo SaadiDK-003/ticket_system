@@ -167,6 +167,9 @@ $token = mysqli_fetch_object($token_Q);
                         let res = JSON.parse(response);
                         $("#ToastDanger .toast-body").html(res.msg);
                         toastDanger.show();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1800);
                     }
                 });
             });
