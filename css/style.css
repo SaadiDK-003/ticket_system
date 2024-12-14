@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+:root {
+  --ff-inter: "Inter", sans-serif;
+  --ff-openSans: "Open Sans", sans-serif;
+}
+
+:root {
+  --bg-primary: rgb(50, 54, 58);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--ff-openSans);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.w-15 {
+  width: 15% !important;
+}
+
+body {
+  font-family: var(--ff-inter);
+}
+body header {
+  background-color: var(--bg-primary);
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body header .container .nav a {
+  text-decoration: none;
+  color: #fff;
+}
+body main {
+  min-height: 850px;
+}
+body#home section.hero {
+  min-height: 350px;
+  background-color: rgb(49, 49, 49);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body#home section.hero p {
+  letter-spacing: 0.8px;
+}
+body#home section.hero .meal-plan-img {
+  height: 300px;
+  overflow: hidden;
+  border-radius: 10px;
+  display: flex;
+}
+body#home section.hero .meal-plan-img img {
+  width: 100%;
+  object-fit: cover;
+}
+body#login, body#register {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+body footer {
+  background-color: var(--bg-primary);
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}/*# sourceMappingURL=style.css.map */

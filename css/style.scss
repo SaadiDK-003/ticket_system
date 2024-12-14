@@ -1,0 +1,91 @@
+@import "fonts";
+
+// General CSS Start
+:root {
+  --bg-primary: rgb(50, 54, 58);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--ff-openSans);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.w-15 {
+  width: 15% !important;
+}
+// General CSS End
+
+body {
+  font-family: var(--ff-inter);
+  header {
+    background-color: var(--bg-primary);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .container {
+      .nav {
+        a {
+          text-decoration: none;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  main {
+    min-height: 850px;
+  }
+  // HOME PAGE
+  &#home {
+    section {
+      &.hero {
+        min-height: 350px;
+        background-color: rgb(49, 49, 49);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p {
+          letter-spacing: 0.8px;
+        }
+        .meal-plan-img {
+          height: 300px;
+          overflow: hidden;
+          border-radius: 10px;
+          display: flex;
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  }
+  // LOGIN PAGE
+  &#login,
+  &#register {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    background-color: var(--bg-primary);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // position: fixed;
+    // bottom: 0;
+    // left: 0;
+    width: 100%;
+  }
+}
