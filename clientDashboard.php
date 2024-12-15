@@ -19,7 +19,7 @@ if ($userRole != 'client') {
     <?php include_once 'includes/header.php'; ?>
 
     <main>
-        <section class="tabs-container">
+        <section class="tabs-section">
             <div class="container mt-5 mx-auto">
                 <div class="row">
                     <div class="col-12"></div>

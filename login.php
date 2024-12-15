@@ -32,13 +32,13 @@ if (isLoggedin()) {
                         </div>
                         <div class="col-12 mb-3">
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label class="form-label" for="email">Email</label>
                                 <input type="email" name="email" id="email" required class="form-control">
                             </div>
                         </div>
                         <div class="col-12 mb-3">
                             <div class="form-group">
-                                <label for="password">Password</label>
+                                <label class="form-label" for="password">Password</label>
                                 <input type="password" name="password" id="password" required class="form-control">
                             </div>
                         </div>

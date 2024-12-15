@@ -21,7 +21,7 @@ $token = mysqli_fetch_object($token_Q);
     <?php include_once 'includes/header.php'; ?>
 
     <main>
-        <section class="tabs-container">
+        <section class="tabs-section">
             <div class="container mt-5 mx-auto">
                 <div class="row">
                     <div id="tabs-buttons" class="col-12 d-flex align-items-center justify-content-center gap-5">
@@ -48,7 +48,7 @@ $token = mysqli_fetch_object($token_Q);
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <div class="form-group">
-                                        <label for="category-name">Category Name</label>
+                                        <label for="category-name" class="form-label">Category Name</label>
                                         <input type="text" name="category_name" id="category-name" class="form-control" required>
                                     </div>
                                 </div>
@@ -93,26 +93,7 @@ $token = mysqli_fetch_object($token_Q);
             </div>
         </section>
     </main>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <!-- Toast Success -->
-        <div id="ToastSuccess" class="toast toast-success align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Category has been Added Successfully.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-        <!-- Toast Danger -->
-        <div id="ToastDanger" class="toast toast-danger align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Category has been Added Successfully.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
+
     <?php include_once 'includes/footer.php'; ?>
     <?php include 'includes/external_js.php'; ?>
 

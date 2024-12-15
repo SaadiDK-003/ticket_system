@@ -38,37 +38,37 @@ if ($_GET['token'] != $token->reg_token) {
                         </div>
                         <div class="col-12 col-md-6 mb-3">
                             <div class="form-group">
-                                <label for="fullName">Full Name</label>
+                                <label class="form-label" for="fullName">Full Name</label>
                                 <input type="text" name="fullName" id="fullName" required class="form-control">
                             </div>
                         </div>
                         <div class="col-12 col-md-6 mb-3">
                             <div class="form-group">
-                                <label for="username">username</label>
+                                <label class="form-label" for="username">username</label>
                                 <input type="username" name="username" id="username" required class="form-control">
                             </div>
                         </div>
                         <div class="col-12 col-md-6 mb-3">
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label class="form-label" for="email">Email</label>
                                 <input type="email" name="email" id="email" required class="form-control">
                             </div>
                         </div>
                         <div class="col-12 col-md-6 mb-3">
                             <div class="form-group">
-                                <label for="password">Password</label>
+                                <label class="form-label" for="password">Password</label>
                                 <input type="password" name="password" id="password" required class="form-control">
                             </div>
                         </div>
                         <div class="col-12 col-md-6 mb-3">
                             <div class="form-group">
-                                <label for="phone">Phone</label>
+                                <label class="form-label" for="phone">Phone</label>
                                 <input type="tel" name="phone" id="phone" required class="form-control">
                             </div>
                         </div>
                         <div class="col-12 col-md-6 mb-3">
                             <div class="form-group">
-                                <label for="role">Speciality</label>
+                                <label class="form-label" for="role">Speciality</label>
                                 <select type="role" name="role" id="role" required class="form-select">
                                     <option value="" selected hidden>Select Speciality</option>
                                     <?php get_categories(); ?>

@@ -24,8 +24,9 @@ require_once 'core/database.php';
                             <h1 class="text-white fw-bold"><?= TITLE ?></h1>
                             <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, nisi illo quam repellendus quo incidunt. At eligendi rem delectus doloremque repellendus porro, totam quam labore alias omnis fuga, repellat quo.</p>
                             <div class="d-flex align-items-center gap-3 buttons">
-                                <a class="btn btn-primary" href="#!">Button 1</a>
-                                <a class="btn btn-secondary" href="#!">Button 2</a>
+                                <?php if ($userRole == 'client'): ?>
+                                    <a class="btn btn-primary" href="./submit-ticket.php">Submit a ticket</a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

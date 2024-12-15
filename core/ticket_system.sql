@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2024 at 10:07 PM
+-- Generation Time: Dec 15, 2024 at 05:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -50,6 +50,42 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`id`, `category_name`, `status`) VALUES
 (1, 'SAP', '1'),
 (2, 'Microsoft Dynamics', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `id` int(11) NOT NULL,
+  `ticket_title` varchar(255) NOT NULL,
+  `ticket_desc` text NOT NULL,
+  `cat_id` int(11) NOT NULL,
+  `status` enum('pending','progress','closed') NOT NULL DEFAULT 'pending',
+  `client_id` int(11) NOT NULL,
+  `dev_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tickets`
+--
+
+INSERT INTO `tickets` (`id`, `ticket_title`, `ticket_desc`, `cat_id`, `status`, `client_id`, `dev_id`) VALUES
+(2, 'test ticket', 'SAP informaiton.', 1, 'pending', 2, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_conversation`
+--
+
+CREATE TABLE `ticket_conversation` (
+  `id` int(11) NOT NULL,
+  `messages` text NOT NULL,
+  `ticket_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -106,6 +142,23 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cat_id` (`cat_id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `dev_id` (`dev_id`);
+
+--
+-- Indexes for table `ticket_conversation`
+--
+ALTER TABLE `ticket_conversation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sender_id` (`sender_id`),
+  ADD KEY `ticket_conversation_ibfk_1` (`ticket_id`);
+
+--
 -- Indexes for table `token`
 --
 ALTER TABLE `token`
@@ -125,7 +178,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `ticket_conversation`
+--
+ALTER TABLE `ticket_conversation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `token`
@@ -138,6 +203,25 @@ ALTER TABLE `token`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`),
+  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`client_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `tickets_ibfk_3` FOREIGN KEY (`dev_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `ticket_conversation`
+--
+ALTER TABLE `ticket_conversation`
+  ADD CONSTRAINT `ticket_conversation_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ticket_conversation_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
