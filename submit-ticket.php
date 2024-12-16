@@ -34,7 +34,7 @@ if (!isLoggedin() || $userRole != 'client') {
                                         <input type="text" name="t_title" id="t_title" required class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-6">
+                                <div id="t-category" class="col-12 col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="t_category" class="form-label">Category</label>
                                         <select name="t_category" id="t_category" class="form-select" required>
@@ -42,6 +42,9 @@ if (!isLoggedin() || $userRole != 'client') {
                                             <?php get_categories(); ?>
                                         </select>
                                     </div>
+                                </div>
+                                <div class="col-12 d-none">
+                                    <div id="sub-filter-wrapper" class="d-flex align-items-center gap-3"></div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mb-3">
@@ -81,9 +84,25 @@ if (!isLoggedin() || $userRole != 'client') {
                         $("#ToastSuccess .toast-body").html(res.msg);
                         toastSuccess.show();
                     }
-                })
-
+                });
             });
+
+            $(document).on("change", "#t_category", function(e) {
+                e.preventDefault();
+                let id = $(this).val();
+                $(this).parents("#t-category").next().removeClass('d-none');
+                $.ajax({
+                    url: "ajax/category.php",
+                    method: "post",
+                    data: {
+                        cat_id: id
+                    },
+                    success: function(response) {
+                        $("#sub-filter-wrapper").html(response);;
+                    }
+                });
+            });
+
         });
     </script>
 </body>
