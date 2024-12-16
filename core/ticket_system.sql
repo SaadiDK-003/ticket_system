@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2024 at 05:01 PM
+-- Generation Time: Dec 16, 2024 at 08:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,6 +28,14 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_categories` ()   SELECT
 *
 FROM categories$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_sub_categories` (IN `cat_id` INT)  NO SQL SELECT
+sc.id AS 'sub_id',
+sc.sub_cat_name,
+c.category_name
+FROM sub_categories sc
+INNER JOIN categories c
+ON sc.cat_id=c.id AND sc.cat_id=cat_id$$
 
 DELIMITER ;
 
@@ -54,6 +62,26 @@ INSERT INTO `categories` (`id`, `category_name`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sub_categories`
+--
+
+CREATE TABLE `sub_categories` (
+  `id` int(11) NOT NULL,
+  `sub_cat_name` varchar(255) NOT NULL,
+  `cat_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sub_categories`
+--
+
+INSERT INTO `sub_categories` (`id`, `sub_cat_name`, `cat_id`) VALUES
+(1, 'SAP MM', 1),
+(2, 'ABAP', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tickets`
 --
 
@@ -62,17 +90,11 @@ CREATE TABLE `tickets` (
   `ticket_title` varchar(255) NOT NULL,
   `ticket_desc` text NOT NULL,
   `cat_id` int(11) NOT NULL,
+  `sub_cat` text NOT NULL,
   `status` enum('pending','progress','closed') NOT NULL DEFAULT 'pending',
   `client_id` int(11) NOT NULL,
   `dev_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tickets`
---
-
-INSERT INTO `tickets` (`id`, `ticket_title`, `ticket_desc`, `cat_id`, `status`, `client_id`, `dev_id`) VALUES
-(2, 'test ticket', 'SAP informaiton.', 1, 'pending', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -142,6 +164,13 @@ ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `sub_categories`
+--
+ALTER TABLE `sub_categories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cat_id` (`cat_id`);
+
+--
 -- Indexes for table `tickets`
 --
 ALTER TABLE `tickets`
@@ -181,10 +210,16 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
+-- AUTO_INCREMENT for table `sub_categories`
+--
+ALTER TABLE `sub_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `ticket_conversation`
@@ -207,6 +242,12 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `sub_categories`
+--
+ALTER TABLE `sub_categories`
+  ADD CONSTRAINT `sub_categories_ibfk_1` FOREIGN KEY (`cat_id`) REFERENCES `categories` (`id`);
 
 --
 -- Constraints for table `tickets`
