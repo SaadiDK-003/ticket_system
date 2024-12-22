@@ -39,10 +39,6 @@ body {
       }
     }
   }
-
-  main {
-    min-height: 850px;
-  }
   // HOME PAGE
   &#home {
     section {
@@ -75,6 +71,46 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  main {
+    min-height: 850px;
+    #chat-refresh {
+      min-height: 300px;
+      border: 2px solid #eee;
+      background-color: #f3f3f3;
+      max-height: 500px;
+      overflow: hidden auto;
+      padding: 8px;
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: #fff;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #0d6efd;
+      }
+      .chat-wrapper {
+        .client,
+        .dev {
+          min-height: 50px;
+          border-radius: 20px;
+          background-color: #ddd;
+          display: flex;
+          padding: 8px;
+          flex-direction: column;
+          &:not(:last-child) {
+            margin-bottom: 20px;
+          }
+        }
+        .client {
+          background-color: lightgreen;
+        }
+        .dev {
+          background-color: lightblue;
+        }
+      }
+    }
   }
 
   footer {

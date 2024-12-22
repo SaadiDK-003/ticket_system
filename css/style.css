@@ -38,9 +38,6 @@ body header .container .nav a {
   text-decoration: none;
   color: #fff;
 }
-body main {
-  min-height: 850px;
-}
 body#home section.hero {
   min-height: 350px;
   background-color: rgb(49, 49, 49);
@@ -66,6 +63,45 @@ body#login, body#register {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+body main {
+  min-height: 850px;
+}
+body main #chat-refresh {
+  min-height: 300px;
+  border: 2px solid #eee;
+  background-color: #f3f3f3;
+  max-height: 500px;
+  overflow: hidden auto;
+  padding: 8px;
+}
+body main #chat-refresh::-webkit-scrollbar {
+  width: 3px;
+}
+body main #chat-refresh::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+body main #chat-refresh::-webkit-scrollbar-thumb {
+  background-color: #0d6efd;
+}
+body main #chat-refresh .chat-wrapper .client,
+body main #chat-refresh .chat-wrapper .dev {
+  min-height: 50px;
+  border-radius: 20px;
+  background-color: #ddd;
+  display: flex;
+  padding: 8px;
+  flex-direction: column;
+}
+body main #chat-refresh .chat-wrapper .client:not(:last-child),
+body main #chat-refresh .chat-wrapper .dev:not(:last-child) {
+  margin-bottom: 20px;
+}
+body main #chat-refresh .chat-wrapper .client {
+  background-color: lightgreen;
+}
+body main #chat-refresh .chat-wrapper .dev {
+  background-color: lightblue;
 }
 body footer {
   background-color: var(--bg-primary);

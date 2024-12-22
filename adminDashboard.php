@@ -25,9 +25,10 @@ $token = mysqli_fetch_object($token_Q);
             <div class="container mt-5 mx-auto">
                 <div class="row">
                     <div id="tabs-buttons" class="col-12 d-flex align-items-center justify-content-center gap-5">
-                        <a href="#!" class="btn btn-success w-15">Add Client</a>
-                        <a href="#!" class="btn btn-primary w-15">Add Categories</a>
-                        <a href="<?= SITE_URL ?>/register.php?token=<?= $token->reg_token ?>" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="click to copy registration Link" data-bs-placement="right"><i class="fas fa-user-plus"></i></a>
+                        <a href="#!" class="btn btn-success w-15 current-page">Add Client</a>
+                        <a href="#!" class="btn btn-primary w-15 current-page">Add Categories</a>
+                        <a href="./all-tickets.php" class="btn btn-warning">All Tickets</a>
+                        <a href="<?= SITE_URL ?>/register.php?token=<?= $token->reg_token ?>" class="btn btn-secondary copy-link" data-bs-toggle="tooltip" data-bs-title="click to copy registration Link" data-bs-placement="right"><i class="fas fa-user-plus"></i></a>
                     </div>
                 </div>
             </div>
@@ -104,11 +105,13 @@ $token = mysqli_fetch_object($token_Q);
             });
 
             // Tabs Selection
-            $(document).on('click', '#tabs-buttons a:not(:last-child)', function(e) {
-                e.preventDefault();
-                let index = $(this).index() + 1;
-                $(this).addClass('active').siblings().removeClass('active');
-                $(`#tabs-content > div:nth-child(${index})`).removeClass('d-none').siblings().addClass('d-none');
+            $(document).on('click', '#tabs-buttons a', function(e) {
+                if ($(this).hasClass('current-page')) {
+                    e.preventDefault();
+                    let index = $(this).index() + 1;
+                    $(this).addClass('active').siblings().removeClass('active');
+                    $(`#tabs-content > div:nth-child(${index})`).removeClass('d-none').siblings().addClass('d-none');
+                }
             });
 
             // Add Category
@@ -156,7 +159,7 @@ $token = mysqli_fetch_object($token_Q);
             });
 
             // Copy Reg link
-            $(document).on('click', '#tabs-buttons a:last-child', function(e) {
+            $(document).on('click', '#tabs-buttons a.copy-link', function(e) {
                 e.preventDefault();
                 let href = $(this).attr('href');
                 // Copy href to clipboard

@@ -239,6 +239,17 @@ function get_categories()
     $db->next_result();
 }
 
+function get_devs()
+{
+    global $db;
+    $get_devs = $db->query("CALL `get_devs`()");
+    while ($dev = mysqli_fetch_object($get_devs)):
+        echo '<option value="' . $dev->id . '">' . $dev->fullname . '</option>';
+    endwhile;
+    $get_devs->close();
+    $db->next_result();
+}
+
 function add_category_with_img($POST, $FILE)
 {
     global $db;
