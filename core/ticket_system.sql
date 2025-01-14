@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.5deb2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 14, 2025 at 10:33 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Jan 14, 2025 at 10:49 AM
+-- Server version: 8.0.40-0ubuntu0.20.04.1
+-- PHP Version: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -25,11 +26,11 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_categories` ()   SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_categories` ()  SELECT
 *
 FROM categories$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_not_pending` ()   SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_not_pending` ()  SELECT
 t.id AS 'ticket_id',
 t.ticket_title,
 t.ticket_desc,
@@ -43,7 +44,7 @@ INNER JOIN users u
 ON t.dev_id=u.id
 WHERE t.status!='pending'$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_pending` ()   SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_pending` ()  SELECT
 t.id AS 'ticket_id',
 t.ticket_title,
 t.ticket_desc,
@@ -53,7 +54,7 @@ t.attachment_type
 FROM tickets t
 WHERE t.status='pending'$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_chat_by_ticket_id` (IN `ticket_id` INT)   SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_chat_by_ticket_id` (IN `ticket_id` INT)  SELECT
 tc.id AS 'tc_id',
 tc.messages,
 tc.sender_id,
@@ -66,7 +67,7 @@ INNER JOIN users u
 ON tc.sender_id=u.id
 WHERE tc.ticket_id=ticket_id ORDER BY tc.id DESC$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client_tickets` (IN `client_id` INT)   SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client_tickets` (IN `client_id` INT)  SELECT
 t.id AS 'ticket_id',
 t.ticket_title,
 t.ticket_desc,
@@ -78,12 +79,26 @@ FROM tickets t
 INNER JOIN users u
 ON t.client_id=u.id AND t.client_id=client_id$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_devs` ()   SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_devs` ()  SELECT
 *
 FROM users u
 WHERE u.role='dev'$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_sub_categories` (IN `cat_id` INT)  NO SQL SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_dev_tickets` (IN `dev_id` INT)  NO SQL
+SELECT
+t.id AS 'ticket_id',
+t.ticket_title,
+t.ticket_desc,
+t.status,
+t.client_id AS 'client_id',
+t.attachment,
+t.attachment_type
+FROM tickets t
+INNER JOIN users u
+ON t.client_id=u.id AND t.dev_id=dev_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_sub_categories` (IN `cat_id` INT)  NO SQL
+SELECT
 sc.id AS 'sub_id',
 sc.sub_cat_name,
 c.category_name
@@ -100,9 +115,9 @@ DELIMITER ;
 --
 
 CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `category_name` varchar(255) NOT NULL,
-  `status` enum('0','1') NOT NULL DEFAULT '1'
+  `id` int NOT NULL,
+  `category_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `status` enum('0','1') COLLATE utf8mb4_general_ci NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -120,9 +135,9 @@ INSERT INTO `categories` (`id`, `category_name`, `status`) VALUES
 --
 
 CREATE TABLE `sub_categories` (
-  `id` int(11) NOT NULL,
-  `sub_cat_name` varchar(255) NOT NULL,
-  `cat_id` int(11) NOT NULL
+  `id` int NOT NULL,
+  `sub_cat_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `cat_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -140,17 +155,17 @@ INSERT INTO `sub_categories` (`id`, `sub_cat_name`, `cat_id`) VALUES
 --
 
 CREATE TABLE `tickets` (
-  `id` int(11) NOT NULL,
-  `ticket_id` varchar(255) DEFAULT NULL,
-  `ticket_title` varchar(255) NOT NULL,
-  `ticket_desc` text NOT NULL,
-  `cat_id` int(11) NOT NULL,
-  `sub_cat` text DEFAULT NULL,
-  `status` enum('pending','progress','closed') NOT NULL DEFAULT 'pending',
-  `client_id` int(11) NOT NULL,
-  `dev_id` int(11) DEFAULT NULL,
-  `attachment` text DEFAULT NULL,
-  `attachment_type` varchar(255) DEFAULT NULL
+  `id` int NOT NULL,
+  `ticket_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `ticket_title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `ticket_desc` text COLLATE utf8mb4_general_ci NOT NULL,
+  `cat_id` int NOT NULL,
+  `sub_cat` text COLLATE utf8mb4_general_ci,
+  `status` enum('pending','progress','closed') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'pending',
+  `client_id` int NOT NULL,
+  `dev_id` int DEFAULT NULL,
+  `attachment` text COLLATE utf8mb4_general_ci,
+  `attachment_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -160,11 +175,11 @@ CREATE TABLE `tickets` (
 --
 
 CREATE TABLE `ticket_conversation` (
-  `id` int(11) NOT NULL,
-  `messages` text NOT NULL,
-  `ticket_id` int(11) NOT NULL,
-  `sender_id` int(11) NOT NULL,
-  `sender_status` enum('dev','client') NOT NULL
+  `id` int NOT NULL,
+  `messages` text COLLATE utf8mb4_general_ci NOT NULL,
+  `ticket_id` int NOT NULL,
+  `sender_id` int NOT NULL,
+  `sender_status` enum('dev','client') COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -174,8 +189,8 @@ CREATE TABLE `ticket_conversation` (
 --
 
 CREATE TABLE `token` (
-  `id` int(11) NOT NULL,
-  `reg_token` text DEFAULT NULL
+  `id` int NOT NULL,
+  `reg_token` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -192,14 +207,14 @@ INSERT INTO `token` (`id`, `reg_token`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `fullname` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','dev','client') NOT NULL DEFAULT 'client',
-  `status` enum('0','1') NOT NULL DEFAULT '0'
+  `id` int NOT NULL,
+  `fullname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `role` enum('admin','dev','client') COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'client',
+  `status` enum('0','1') COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -267,37 +282,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `sub_categories`
 --
 ALTER TABLE `sub_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ticket_conversation`
 --
 ALTER TABLE `ticket_conversation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
