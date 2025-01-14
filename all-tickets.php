@@ -35,6 +35,7 @@ endif;
                                     <th>Ticket Title</th>
                                     <th>Ticket Description</th>
                                     <th>Status</th>
+                                    <th>Attachment</th>
                                     <th>Assign To</th>
                                 </tr>
                             </thead>
@@ -42,6 +43,7 @@ endif;
                                 <?php $tickets_Q = $db->query("CALL `get_all_tickets_pending`()");
                                 while ($tickets = mysqli_fetch_object($tickets_Q)):
                                     $status = $tickets->status;
+                                    $attachment_type = $tickets->attachment_type;
                                 ?>
                                     <tr>
                                         <td><?= $tickets->ticket_title ?></td>
@@ -56,6 +58,13 @@ endif;
                                             <?php endif; ?>
                                         </td>
                                         <td>
+                                            <?php if ($attachment_type != 'pdf'): ?>
+                                                <img src="attachments/<?= $tickets->attachment ?>" alt="attachment" width="50" height="50" class="d-block mx-auto">
+                                            <?php else: ?>
+                                                <a href="attachments/<?= $tickets->attachment ?>" download class="btn btn-primary">Download</a>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
                                             <a href="#!" data-id="<?= $tickets->ticket_id ?>" class="btn btn-primary btn-sm btn-dev" data-bs-toggle="modal" data-bs-target="#assignTicket"><i class="fas fa-user-gear"></i></a>
                                         </td>
                                     </tr>
@@ -67,7 +76,7 @@ endif;
                         </table>
                     </div>
                 </div>
-                <!-- Pending Tickets -->
+                <!-- Progress Tickets -->
                 <div class="row mt-5">
                     <div class="col-12">
                         <h1 class="text-center mb-4">All Progress Tickets</h1>
@@ -79,6 +88,7 @@ endif;
                                     <th>Ticket Title</th>
                                     <th>Ticket Description</th>
                                     <th>Status</th>
+                                    <th>Attachment</th>
                                     <th>Assign To</th>
                                 </tr>
                             </thead>
@@ -86,6 +96,7 @@ endif;
                                 <?php $tickets_Q = $db->query("CALL `get_all_tickets_not_pending`()");
                                 while ($tickets = mysqli_fetch_object($tickets_Q)):
                                     $status = $tickets->status;
+                                    $attachment_type = $tickets->attachment_type;
                                 ?>
                                     <tr>
                                         <td><?= $tickets->ticket_title ?></td>
@@ -97,6 +108,13 @@ endif;
                                                 <span class="btn btn-info">Progress</span>
                                             <?php else: ?>
                                                 <span class="btn btn-secondary">Closed</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($attachment_type != 'pdf'): ?>
+                                                <img src="attachments/<?= $tickets->attachment ?>" alt="attachment" width="50" height="50" class="d-block mx-auto">
+                                            <?php else: ?>
+                                                <a href="attachments/<?= $tickets->attachment ?>" download class="btn btn-primary">Download</a>
                                             <?php endif; ?>
                                         </td>
                                         <td>
@@ -122,7 +140,7 @@ endif;
             <form id="assign-dev-form" class="w-100">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="assignTicketLabel">Modal title</h1>
+                        <h1 class="modal-title fs-5" id="assignTicketLabel">Assign to Developer</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

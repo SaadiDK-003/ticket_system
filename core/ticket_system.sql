@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2024 at 08:47 PM
+-- Generation Time: Jan 14, 2025 at 10:33 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,6 +28,60 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_categories` ()   SELECT
 *
 FROM categories$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_not_pending` ()   SELECT
+t.id AS 'ticket_id',
+t.ticket_title,
+t.ticket_desc,
+t.status,
+t.dev_id AS 'dev_id',
+u.fullname,
+t.attachment,
+t.attachment_type
+FROM tickets t
+INNER JOIN users u
+ON t.dev_id=u.id
+WHERE t.status!='pending'$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_pending` ()   SELECT
+t.id AS 'ticket_id',
+t.ticket_title,
+t.ticket_desc,
+t.status,
+t.attachment,
+t.attachment_type
+FROM tickets t
+WHERE t.status='pending'$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_chat_by_ticket_id` (IN `ticket_id` INT)   SELECT
+tc.id AS 'tc_id',
+tc.messages,
+tc.sender_id,
+tc.sender_status,
+u.fullname
+FROM ticket_conversation tc
+INNER JOIN tickets t
+ON tc.ticket_id=t.id
+INNER JOIN users u
+ON tc.sender_id=u.id
+WHERE tc.ticket_id=ticket_id ORDER BY tc.id DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_client_tickets` (IN `client_id` INT)   SELECT
+t.id AS 'ticket_id',
+t.ticket_title,
+t.ticket_desc,
+t.status,
+t.dev_id AS 'dev_id',
+t.attachment,
+t.attachment_type
+FROM tickets t
+INNER JOIN users u
+ON t.client_id=u.id AND t.client_id=client_id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_devs` ()   SELECT
+*
+FROM users u
+WHERE u.role='dev'$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_sub_categories` (IN `cat_id` INT)  NO SQL SELECT
 sc.id AS 'sub_id',
@@ -87,13 +141,16 @@ INSERT INTO `sub_categories` (`id`, `sub_cat_name`, `cat_id`) VALUES
 
 CREATE TABLE `tickets` (
   `id` int(11) NOT NULL,
+  `ticket_id` varchar(255) DEFAULT NULL,
   `ticket_title` varchar(255) NOT NULL,
   `ticket_desc` text NOT NULL,
   `cat_id` int(11) NOT NULL,
-  `sub_cat` text NOT NULL,
+  `sub_cat` text DEFAULT NULL,
   `status` enum('pending','progress','closed') NOT NULL DEFAULT 'pending',
   `client_id` int(11) NOT NULL,
-  `dev_id` int(11) DEFAULT NULL
+  `dev_id` int(11) DEFAULT NULL,
+  `attachment` text DEFAULT NULL,
+  `attachment_type` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -106,7 +163,8 @@ CREATE TABLE `ticket_conversation` (
   `id` int(11) NOT NULL,
   `messages` text NOT NULL,
   `ticket_id` int(11) NOT NULL,
-  `sender_id` int(11) NOT NULL
+  `sender_id` int(11) NOT NULL,
+  `sender_status` enum('dev','client') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -151,7 +209,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `phone`, `password`, `role`, `status`) VALUES
 (1, 'Admin 123', 'admin', 'admin@gmail.com', NULL, '4297f44b13955235245b2497399d7a93', 'admin', '1'),
 (2, 'Client 123', 'client', 'client@gmail.com', NULL, '4297f44b13955235245b2497399d7a93', 'client', '1'),
-(8, 'Dev 1', 'dev1', 'dev@gmail.com', '1234412512312', '4297f44b13955235245b2497399d7a93', 'dev', '0');
+(8, 'Dev 1', 'dev1', 'dev@gmail.com', '1234412512312', '4297f44b13955235245b2497399d7a93', 'dev', '1'),
+(9, 'Dev 2', 'dev2', 'dev2@gmail.com', NULL, '4297f44b13955235245b2497399d7a93', 'dev', '1');
 
 --
 -- Indexes for dumped tables
@@ -175,6 +234,7 @@ ALTER TABLE `sub_categories`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `ticket_id` (`ticket_id`),
   ADD KEY `cat_id` (`cat_id`),
   ADD KEY `client_id` (`client_id`),
   ADD KEY `dev_id` (`dev_id`);
@@ -207,7 +267,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `sub_categories`
@@ -219,13 +279,13 @@ ALTER TABLE `sub_categories`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `ticket_conversation`
 --
 ALTER TABLE `ticket_conversation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `token`
@@ -237,7 +297,7 @@ ALTER TABLE `token`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

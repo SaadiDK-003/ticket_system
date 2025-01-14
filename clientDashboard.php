@@ -32,6 +32,7 @@ if ($userRole != 'client') {
                                     <th>Ticket Title</th>
                                     <th>Ticket Description</th>
                                     <th>Status</th>
+                                    <th>Attachment</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -39,6 +40,7 @@ if ($userRole != 'client') {
                                 <?php $client_t_Q = $db->query("CALL `get_client_tickets`($userID)");
                                 while ($client_t = mysqli_fetch_object($client_t_Q)):
                                     $status = $client_t->status;
+                                    $attachment_type = $client_t->attachment_type;
                                 ?>
                                     <tr>
                                         <td><?= $client_t->ticket_title ?></td>
@@ -50,6 +52,13 @@ if ($userRole != 'client') {
                                                 <span class="btn btn-info">Progress</span>
                                             <?php else: ?>
                                                 <span class="btn btn-secondary">Closed</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($attachment_type != 'pdf'): ?>
+                                                <img src="attachments/<?= $client_t->attachment ?>" alt="attachment" width="50" height="50" class="d-block mx-auto">
+                                            <?php else: ?>
+                                                <a href="attachments/<?= $client_t->attachment ?>" download class="btn btn-primary">Download</a>
                                             <?php endif; ?>
                                         </td>
                                         <td>

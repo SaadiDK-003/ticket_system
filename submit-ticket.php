@@ -26,7 +26,7 @@ if (!isLoggedin() || $userRole != 'client') {
                         <h1 class="text-center mt-5 mb-3">Submit A Ticket</h1>
                     </div>
                     <div class="col-12 col-md-6 mx-auto">
-                        <form id="ticket-submit">
+                        <form id="ticket-submit" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-12 col-md-6">
                                     <div class="form-group mb-3">
@@ -45,6 +45,12 @@ if (!isLoggedin() || $userRole != 'client') {
                                 </div>
                                 <div class="col-12 d-none">
                                     <div id="sub-filter-wrapper" class="d-flex align-items-center gap-3"></div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-3">
+                                        <label for="attachment" class="form-label">Attachment</label>
+                                        <input type="file" name="attachment" id="attachment" class="form-control">
+                                    </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mb-3">
@@ -73,12 +79,15 @@ if (!isLoggedin() || $userRole != 'client') {
         $(document).ready(function() {
             $(document).on("submit", "#ticket-submit", function(e) {
                 e.preventDefault();
-                let formData = $(this).serialize();
+                let formData = new FormData(this);
 
                 $.ajax({
                     url: "ajax/submit-ticket.php",
                     method: "post",
                     data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     success: function(response) {
                         let res = JSON.parse(response);
                         $("#ToastSuccess .toast-body").html(res.msg);
@@ -98,11 +107,15 @@ if (!isLoggedin() || $userRole != 'client') {
                         cat_id: id
                     },
                     success: function(response) {
-                        $("#sub-filter-wrapper").html(response);;
+                        $("#sub-filter-wrapper").html(response);
+                        $('.select2').select2({
+                            placeholder: 'Select Sub Category',
+                            tags: false,
+                            width: '100%'
+                        });
                     }
                 });
             });
-
         });
     </script>
 </body>

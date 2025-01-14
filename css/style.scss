@@ -22,6 +22,27 @@ img {
 }
 // General CSS End
 
+// Select2 CSS Start
+
+span.select2.select2-container {
+  margin-bottom: 10px;
+  &:not(.select2-container--open) span.select2-search.select2-search--inline {
+    height: 0;
+    caret-color: transparent;
+  }
+}
+#sub-filter-wrapper {
+  ul.select2-selection__rendered {
+    li {
+      &.select2-selection__choice {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Select2 CSS End
+
 body {
   font-family: var(--ff-inter);
   header {
