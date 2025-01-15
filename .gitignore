@@ -2,6 +2,7 @@ pdf/
 site_info/
 img/
 .sass-cache/
+attachments/
 *.css.map
 *.sass.map
 *.scss.map
