@@ -53,7 +53,7 @@ if ($userRole != 'dev') {
                                         </td>
                                         <td>
                                             <?php if ($attachment_type != 'pdf'): ?>
-                                                <img src="attachments/<?= $dev_t->attachment ?>" alt="attachment" width="100" class="d-block mx-auto">
+                                                <img src="attachments/<?= $dev_t->attachment ?>" alt="attachment" width="60" class="d-block mx-auto">
                                             <?php else: ?>
                                                 <a href="attachments/<?= $dev_t->attachment ?>" download class="btn btn-primary">Download</a>
                                             <?php endif; ?>

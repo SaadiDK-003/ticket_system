@@ -59,7 +59,7 @@ endif;
                                         </td>
                                         <td>
                                             <?php if ($attachment_type != 'pdf'): ?>
-                                                <img src="attachments/<?= $tickets->attachment ?>" alt="attachment" width="50" height="50" class="d-block mx-auto">
+                                                <img src="attachments/<?= $tickets->attachment ?>" alt="attachment" width="60" class="d-block mx-auto">
                                             <?php else: ?>
                                                 <a href="attachments/<?= $tickets->attachment ?>" download class="btn btn-primary">Download</a>
                                             <?php endif; ?>
@@ -112,7 +112,7 @@ endif;
                                         </td>
                                         <td>
                                             <?php if ($attachment_type != 'pdf'): ?>
-                                                <img src="attachments/<?= $tickets->attachment ?>" alt="attachment" width="50" height="50" class="d-block mx-auto">
+                                                <img src="attachments/<?= $tickets->attachment ?>" alt="attachment" width="60" class="d-block mx-auto">
                                             <?php else: ?>
                                                 <a href="attachments/<?= $tickets->attachment ?>" download class="btn btn-primary">Download</a>
                                             <?php endif; ?>
