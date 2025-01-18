@@ -20,4 +20,13 @@
     // ToolTips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    $(document).ready(function() {
+        $(document).on("click", "#open-mobile-nav", function(e) {
+            $(".mobile-nav-container").addClass("active");
+        });
+        $(document).on("click", "#close-mobile-nav", function(e) {
+            $(".mobile-nav-container").removeClass("active");
+        });
+    });
 </script>

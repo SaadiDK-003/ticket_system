@@ -50,6 +50,20 @@ body header .container .nav a {
   text-decoration: none;
   color: #fff;
 }
+body header .container .nav.mobile a {
+  color: #222;
+}
+body header .container .mobile-nav-container {
+  transition: all 0.3s ease;
+  transform: translateX(-100%);
+}
+body header .container .mobile-nav-container.active {
+  transform: translateX(0);
+}
+body header .container #close-mobile-nav {
+  top: 10px;
+  right: 30px;
+}
 body#home section.hero {
   min-height: 350px;
   background-color: rgb(49, 49, 49);

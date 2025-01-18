@@ -239,6 +239,17 @@ function get_categories()
     $db->next_result();
 }
 
+function get_client()
+{
+    global $db;
+    $options = '';
+    $get_c_Q = $db->query("SELECT * FROM `users` WHERE `role`='client'");
+    while ($client = mysqli_fetch_object($get_c_Q)) {
+        $options .= '<option value="' . $client->id . '">' . $client->username . '</option>';
+    }
+    return $options;
+}
+
 function get_devs()
 {
     global $db;

@@ -46,7 +46,7 @@ if ($userRole != 'dev') {
                                             <?php if ($status == 'pending'): ?>
                                                 <span class="btn btn-warning">Pending</span>
                                             <?php elseif ($status == 'progress'): ?>
-                                                <span class="btn btn-info">Progress</span>
+                                                <span class="btn btn-info">Open</span>
                                             <?php else: ?>
                                                 <span class="btn btn-secondary">Closed</span>
                                             <?php endif; ?>

@@ -57,6 +57,22 @@ body {
           text-decoration: none;
           color: #fff;
         }
+        &.mobile {
+          a {
+            color: #222;
+          }
+        }
+      }
+      .mobile-nav-container {
+        transition: all 0.3s ease;
+        transform: translateX(-100%);
+        &.active {
+          transform: translateX(0);
+        }
+      }
+      #close-mobile-nav {
+        top: 10px;
+        right: 30px;
       }
     }
   }
