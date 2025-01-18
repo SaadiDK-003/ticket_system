@@ -27,8 +27,6 @@ if (isset($_POST['search_client']) && isset($_POST['ticket_status'])):
                 <td><?= ($ticket->status == 'progress') ? '<span class="btn btn-info">Open</span>' : '<span class="btn btn-secondary">Closed</span>' ?></td>
             </tr>
 <?php endwhile;
-    else:
-        echo '<tr><td colspan="5" class="dt-empty">No record found!</td></tr>';
     endif;
 
 endif;

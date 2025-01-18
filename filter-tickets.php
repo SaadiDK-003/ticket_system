@@ -22,6 +22,7 @@ if (!isLoggedin() || $userRole != 'admin') {
             <div class="row">
                 <div class="col-12 col-md-7 d-flex align-items-center">
                     <h2>Filter Tickets</h2>
+                    <span class="show-error-msg mb-0 ms-2 text-center w-50"></span>
                 </div>
                 <div class="col-12 col-md-5">
                     <form id="search-filter">
@@ -55,7 +56,7 @@ if (!isLoggedin() || $userRole != 'admin') {
             <!-- TABLE -->
             <div class="row mt-5">
                 <div class="col-12">
-                    <table id="filter-table" class="table table-bordered table-striped text-center align-middle">
+                    <table id="filter-table" class="table table-bordered table-striped table-responsive text-center align-middle">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -65,7 +66,11 @@ if (!isLoggedin() || $userRole != 'admin') {
                                 <th>status</th>
                             </tr>
                         </thead>
-                        <tbody id="fetch_result"></tbody>
+                        <tbody id="fetch_result">
+                            <tr>
+                                <td colspan="5" class="dt-empty">No record found!</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -77,9 +82,6 @@ if (!isLoggedin() || $userRole != 'admin') {
     <?php include_once 'includes/external_js.php'; ?>
     <script>
         $(document).ready(function() {
-
-            new DataTable("#filter-table");
-
             $("#search-filter").on("submit", function(e) {
                 e.preventDefault();
                 let formData = $(this).serialize();
@@ -88,7 +90,16 @@ if (!isLoggedin() || $userRole != 'admin') {
                     method: "post",
                     data: formData,
                     success: function(response) {
-                        $("#fetch_result").html(response);
+                        if (response.length > 0) {
+                            $(".show-error-msg").html('').removeClass('alert alert-danger');
+                            $("#fetch_result").html(response);
+                            new DataTable("#filter-table");
+                        } else {
+                            $(".show-error-msg").html('No record found!').addClass('alert alert-danger');
+                            setTimeout(() => {
+                                $(".show-error-msg").html('').removeClass('alert alert-danger');
+                            }, 1000);
+                        }
                     }
                 });
             });
