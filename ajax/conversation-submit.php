@@ -15,3 +15,16 @@ if (isset($_POST['message']) && isset($_POST['ticket_id']) && isset($_POST['send
     }
 
 endif;
+
+
+if (isset($_POST['close_ticket'])):
+    $ctID = $_POST['close_ticket'];
+    $msg = '';
+    $upd_Q = $db->query("UPDATE `tickets` SET `status`='closed' WHERE `id`='$ctID'");
+    if ($upd_Q):
+        $msg = json_encode(["status" => "success", "msg" => "Ticket has been closed."]);
+    else:
+        $msg = json_encode(["status" => "error", "msg" => "Something went wrong!"]);
+    endif;
+    echo $msg;
+endif;

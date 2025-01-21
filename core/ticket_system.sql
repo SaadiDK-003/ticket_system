@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 18, 2025 at 06:32 PM
+-- Generation Time: Jan 21, 2025 at 10:27 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,7 +58,8 @@ tc.id AS 'tc_id',
 tc.messages,
 tc.sender_id,
 tc.sender_status,
-u.fullname
+u.fullname,
+t.status AS 'ticket_status'
 FROM ticket_conversation tc
 INNER JOIN tickets t
 ON tc.ticket_id=t.id
@@ -164,13 +165,6 @@ CREATE TABLE `tickets` (
   `attachment` text DEFAULT NULL,
   `attachment_type` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tickets`
---
-
-INSERT INTO `tickets` (`id`, `ticket_id`, `ticket_title`, `ticket_desc`, `cat_id`, `sub_cat`, `status`, `client_id`, `dev_id`, `attachment`, `attachment_type`) VALUES
-(6, 'INS0001', 'I need help', 'adasdasdasdasdasdsadasd', 1, 'SAP MM,ABAP', 'progress', 2, 8, 'abc.png', 'png');
 
 -- --------------------------------------------------------
 
@@ -299,13 +293,13 @@ ALTER TABLE `sub_categories`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `ticket_conversation`
 --
 ALTER TABLE `ticket_conversation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `token`

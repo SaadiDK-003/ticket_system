@@ -48,8 +48,10 @@ if ($cUser->$u != $userID) {
                         <div id="chat-refresh">
                             <div class="chat-wrapper">
                                 <?php
+                                $check_t_status = '';
                                 $msg_Q = $db->query("CALL `get_chat_by_ticket_id`($t_id)");
                                 while ($msgs = mysqli_fetch_object($msg_Q)):
+                                    $check_t_status = $msgs->ticket_status;
                                 ?>
                                     <div class="<?= $msgs->sender_status ?>">
                                         <span><?= $msgs->fullname ?></span>
@@ -63,13 +65,14 @@ if ($cUser->$u != $userID) {
                         <form id="con-form">
                             <div class="form-group mb-3">
                                 <label for="message" class="form-label">message</label>
-                                <textarea name="message" id="message" placeholder="Enter your message." class="form-control"></textarea>
+                                <textarea name="message" id="message" placeholder="Enter your message." class="form-control" <?= $check_t_status == 'closed' ? 'disabled' : '' ?>></textarea>
                             </div>
                             <div class="form-group d-flex justify-content-end">
                                 <input type="hidden" name="ticket_id" value="<?= $t_id ?>">
                                 <input type="hidden" name="sender_id" value="<?= $userID ?>">
                                 <input type="hidden" name="sender_role" value="<?= $userRole ?>">
-                                <button type="submit" name="con_submit" class="btn btn-primary">Submit</button>
+                                <a href="#!" data-id="<?= $t_id ?>" class="close-ticket btn btn-secondary me-auto ms-0">Close Ticket</a>
+                                <button type="submit" name="con_submit" class="btn btn-primary" <?= $check_t_status == 'closed' ? 'disabled' : '' ?>>Submit</button>
                             </div>
                         </form>
                     </div>
@@ -131,6 +134,25 @@ if ($cUser->$u != $userID) {
             startChatRefresh();
 
 
+            $(document).on('click', '.close-ticket', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $.ajax({
+                    url: "ajax/conversation-submit.php",
+                    method: "post",
+                    data: {
+                        close_ticket: id
+                    },
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        if (res.status == 'success') {
+                            $("#ToastSuccess .toast-body").html(res.msg);
+                            toastSuccess.show();
+                            $("#message, button[type='submit']").attr('disabled', true);
+                        }
+                    }
+                });
+            });
 
         });
     </script>

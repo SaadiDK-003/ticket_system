@@ -24,6 +24,9 @@ $token = mysqli_fetch_object($token_Q);
         <section class="tabs-section">
             <div class="container mt-5 mx-auto">
                 <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-5"><?= $userName ?></h2>
+                    </div>
                     <div id="tabs-buttons" class="col-12 d-flex align-items-center justify-content-center gap-5">
                         <a href="#!" class="btn btn-success w-15 current-page">Add Client</a>
                         <a href="#!" class="btn btn-primary w-15 current-page">Add Categories</a>

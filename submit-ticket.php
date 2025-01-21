@@ -92,6 +92,9 @@ if (!isLoggedin() || $userRole != 'client') {
                         let res = JSON.parse(response);
                         $("#ToastSuccess .toast-body").html(res.msg);
                         toastSuccess.show();
+                        setTimeout(() => {
+                            window.location.href = './clientDashboard.php';
+                        }, 2000);
                     }
                 });
             });

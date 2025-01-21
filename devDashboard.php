@@ -23,6 +23,9 @@ if ($userRole != 'dev') {
             <div class="container mt-5 mx-auto">
                 <div class="row">
                     <div class="col-12">
+                        <h2 class="text-center mb-5"><?= $userName ?></h2>
+                    </div>
+                    <div class="col-12">
                         <table id="devTable" class="table table-stripped table-bordered text-center align-middle">
                             <thead>
                                 <tr>
