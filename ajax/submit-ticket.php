@@ -41,7 +41,7 @@ if (isset($_POST['t_title']) && isset($_POST['t_category'])):
         if (in_array($fileType, $allowTypes)) {
             //upload file to server
             if (move_uploaded_file($_FILES["attachment"]["tmp_name"], $targetFilePath)) {
-                $sub_ticket_Q = $db->query("INSERT INTO `tickets` (ticket_id,ticket_title,ticket_desc,cat_id,sub_cat,status,client_id,attachment,attachment_type) VALUES('$ticket_id','$title','$desc','$cat_id','$subCategory','pending','$client_id','$fileName','$fileType')");
+                $sub_ticket_Q = $db->query("INSERT INTO `tickets` (ticket_id,ticket_title,ticket_desc,cat_id,sub_cat,status,client_id,attachment,attachment_type) VALUES('$ticket_id','$title','$desc','$cat_id','$subCategory','new','$client_id','$fileName','$fileType')");
                 if ($sub_ticket_Q):
                     $msg = json_encode(["status" => "success", "msg" => "Ticket submitted successfully."]);
                 else:

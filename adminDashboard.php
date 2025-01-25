@@ -31,7 +31,7 @@ $token = mysqli_fetch_object($token_Q);
                         <a href="#!" class="btn btn-success w-15 current-page">Add Client</a>
                         <a href="#!" class="btn btn-primary w-15 current-page">Add Categories</a>
                         <a href="./all-tickets.php" class="btn btn-warning">All Tickets</a>
-                        <a href="./filter-tickets.php" class="btn btn-warning">Filter Tickets</a>
+                        <a href="./filter-tickets.php" class="btn btn-warning">Tickets Status</a>
                         <a href="<?= SITE_URL ?>/register.php?token=<?= $token->reg_token ?>" class="btn btn-secondary copy-link" data-bs-toggle="tooltip" data-bs-title="click to copy registration Link" data-bs-placement="right"><i class="fas fa-user-plus"></i></a>
                     </div>
                 </div>

@@ -21,7 +21,7 @@ if (!isLoggedin() || $userRole != 'admin') {
         <div class="container mx-auto my-4">
             <div class="row">
                 <div class="col-12 col-md-7 d-flex align-items-center">
-                    <h2>Filter Tickets</h2>
+                    <h2>Tickets Status</h2>
                     <span class="show-error-msg mb-0 ms-2 text-center w-50"></span>
                 </div>
                 <div class="col-12 col-md-5">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2025 at 10:27 AM
+-- Generation Time: Jan 25, 2025 at 02:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,7 +29,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_categories` ()   SELECT
 *
 FROM categories$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_not_pending` ()   SELECT
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_new` ()   SELECT
+t.id AS 'ticket_id',
+t.ticket_title,
+t.ticket_desc,
+t.status,
+t.attachment,
+t.attachment_type
+FROM tickets t
+WHERE t.status='new'$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_not_new` ()   SELECT
 t.id AS 'ticket_id',
 t.ticket_title,
 t.ticket_desc,
@@ -41,17 +51,7 @@ t.attachment_type
 FROM tickets t
 INNER JOIN users u
 ON t.dev_id=u.id
-WHERE t.status!='pending'$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_tickets_pending` ()   SELECT
-t.id AS 'ticket_id',
-t.ticket_title,
-t.ticket_desc,
-t.status,
-t.attachment,
-t.attachment_type
-FROM tickets t
-WHERE t.status='pending'$$
+WHERE t.status!='new'$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_chat_by_ticket_id` (IN `ticket_id` INT)   SELECT
 tc.id AS 'tc_id',
@@ -159,7 +159,7 @@ CREATE TABLE `tickets` (
   `ticket_desc` text NOT NULL,
   `cat_id` int(11) NOT NULL,
   `sub_cat` text DEFAULT NULL,
-  `status` enum('pending','progress','closed') NOT NULL DEFAULT 'pending',
+  `status` enum('new','pending','progress','closed') NOT NULL DEFAULT 'new',
   `client_id` int(11) NOT NULL,
   `dev_id` int(11) DEFAULT NULL,
   `attachment` text DEFAULT NULL,
@@ -293,13 +293,13 @@ ALTER TABLE `sub_categories`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `ticket_conversation`
 --
 ALTER TABLE `ticket_conversation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `token`

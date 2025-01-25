@@ -26,7 +26,7 @@ endif;
                 <!-- Pending Tickets -->
                 <div class="row">
                     <div class="col-12">
-                        <h1 class="text-center mb-4">All Pending Tickets</h1>
+                        <h1 class="text-center mb-4">All New Tickets</h1>
                     </div>
                     <div class="col-12">
                         <table id="tickets" class="table table-striped table-bordered text-center align-middle">
@@ -40,7 +40,7 @@ endif;
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $tickets_Q = $db->query("CALL `get_all_tickets_pending`()");
+                                <?php $tickets_Q = $db->query("CALL `get_all_tickets_new`()");
                                 while ($tickets = mysqli_fetch_object($tickets_Q)):
                                     $status = $tickets->status;
                                     $attachment_type = $tickets->attachment_type;
@@ -49,7 +49,9 @@ endif;
                                         <td><?= $tickets->ticket_title ?></td>
                                         <td><?= $tickets->ticket_desc ?></td>
                                         <td>
-                                            <?php if ($status == 'pending'): ?>
+                                            <?php if ($status == 'new'): ?>
+                                                <span class="btn btn-secondary">New</span>
+                                            <?php elseif ($status == 'pending'): ?>
                                                 <span class="btn btn-warning">Pending</span>
                                             <?php elseif ($status == 'progress'): ?>
                                                 <span class="btn btn-info">Open</span>
@@ -79,7 +81,7 @@ endif;
                 <!-- Progress Tickets -->
                 <div class="row mt-5">
                     <div class="col-12">
-                        <h1 class="text-center mb-4">All Progress Tickets</h1>
+                        <h1 class="text-center mb-4">Assigned Tickets</h1>
                     </div>
                     <div class="col-12">
                         <table id="tickets-1" class="table table-striped table-bordered text-center align-middle">
@@ -93,7 +95,7 @@ endif;
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $tickets_Q = $db->query("CALL `get_all_tickets_not_pending`()");
+                                <?php $tickets_Q = $db->query("CALL `get_all_tickets_not_new`()");
                                 while ($tickets = mysqli_fetch_object($tickets_Q)):
                                     $status = $tickets->status;
                                     $attachment_type = $tickets->attachment_type;
@@ -146,8 +148,8 @@ endif;
                     <div class="modal-body">
                         <span id="showDevMsg"></span>
                         <div class="form-group">
-                            <label for="developer">Developer</label>
-                            <select name="dev" id="dev" class="form-select" required>
+                            <label for="developer" class="form-label">Developer</label>
+                            <select name="dev" id="developer" class="form-select" required>
                                 <option value="" selected hidden>Select Dev</option>
                                 <?= get_devs(); ?>
                             </select>

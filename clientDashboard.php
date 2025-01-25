@@ -46,12 +46,14 @@ if ($userRole != 'client') {
                                         <td><?= $client_t->ticket_title ?></td>
                                         <td><?= $client_t->ticket_desc ?></td>
                                         <td>
-                                            <?php if ($status == 'pending'): ?>
+                                            <?php if ($status == 'new'): ?>
+                                                <span class="btn btn-secondary">New</span>
+                                            <?php elseif ($status == 'pending'): ?>
                                                 <span class="btn btn-warning">Pending</span>
                                             <?php elseif ($status == 'progress'): ?>
                                                 <span class="btn btn-info">Open</span>
                                             <?php else: ?>
-                                                <span class="btn btn-secondary">Closed</span>
+                                                <span class="btn btn-success">Closed</span>
                                             <?php endif; ?>
                                         </td>
                                         <td>
@@ -62,12 +64,14 @@ if ($userRole != 'client') {
                                             <?php endif; ?>
                                         </td>
                                         <td>
-                                            <?php if ($status == 'pending'): ?>
+                                            <?php if ($status == 'new' || $status == 'pending'): ?>
                                                 <a href="#!" data-id="<?= $client_t->ticket_id ?>" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                                            <?php else: ?>
+                                            <?php elseif($status == 'progress'): ?>
                                                 <a href="./conversation-form.php?t_id=<?= $client_t->ticket_id ?>" class="btn btn-primary btn-sm">
                                                     <i class="fas fa-message"></i> chat
                                                 </a>
+                                            <?php else: ?>
+                                                ---
                                             <?php endif; ?>
                                         </td>
                                     </tr>
