@@ -133,6 +133,17 @@ function sendMail($POST)
     }
 }
 
+function checkEmail($email)
+{
+    global $db;
+    $checkEmail = $db->query("SELECT email FROM `users` WHERE `email`='$email'");
+    if (mysqli_num_rows($checkEmail) > 0) :
+        return true;
+    else:
+        return false;
+    endif;
+}
+
 function profile_pic($POST, $FILE)
 {
     $targetDir = './img/prod/';

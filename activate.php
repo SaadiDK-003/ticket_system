@@ -1,10 +1,17 @@
 <?php
-
 require_once 'core/database.php';
-// $activate_user_by_mail_check = $_GET['mail'];
-// if (!isLoggedin() || $activate_user_by_mail_check == '') {
-//     header('Location: login.php');
-// }
+$activate_user_by_mail_check = $_GET['mail'] ?? '';
+
+if (isLoggedin() || $activate_user_by_mail_check == '') {
+    header('Location: index.php');
+}
+
+$upd_user = false;
+
+if (checkEmail($activate_user_by_mail_check)) {
+    $upd_user = $db->query("UPDATE `users` SET `status`='1' WHERE `email`='$activate_user_by_mail_check'");
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,27 +30,37 @@ require_once 'core/database.php';
         <div class="container">
             <div class="row">
                 <div class="col-8 mx-auto">
-                    <div class="row">
-                        <div class="col-12 text-center my-3">
-                            <h3 class="alert alert-success">Your Account has been activated.</h3>
+                    <?php if ($upd_user): ?>
+                        <div class="row">
+                            <div class="col-12 text-center my-3">
+                                <h3 class="alert alert-success">Your Account has been activated.</h3>
+                            </div>
+                            <div class="col-12 text-center">
+                                <h4 class="btn btn-success">Redirecting to Login Page...</h4>
+                            </div>
                         </div>
-                        <div class="col-12 text-center">
-                            <h4 class="btn btn-success">Redirecting to Login Page...</h4>
+                    <?php else: ?>
+                        <div class="row">
+                            <div class="col-12 text-center my-3">
+                                <h3 class="alert alert-danger">Sorry, This Email is not exists in our database.</h3>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </main>
     <?php include_once 'includes/footer.php'; ?>
     <?php include_once 'includes/external_js.php'; ?>
-    <script>
-        $(document).ready(function() {
-            setTimeout(() => {
-                window.location.href = './login.php';
-            }, 2000);
-        });
-    </script>
+    <?php if ($upd_user): ?>
+        <script>
+            $(document).ready(function() {
+                setTimeout(() => {
+                    window.location.href = './login.php';
+                }, 2000);
+            });
+        </script>
+    <?php endif; ?>
 </body>
 
 </html>
