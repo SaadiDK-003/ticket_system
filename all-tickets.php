@@ -92,6 +92,7 @@ endif;
                                     <th>Status</th>
                                     <th>Attachment</th>
                                     <th>Assign To</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,11 +106,11 @@ endif;
                                         <td><?= $tickets->ticket_desc ?></td>
                                         <td>
                                             <?php if ($status == 'pending'): ?>
-                                                <span class="btn btn-warning">Pending</span>
+                                                <span class="btn btn-warning">Assigned</span>
                                             <?php elseif ($status == 'progress'): ?>
                                                 <span class="btn btn-info">Open</span>
                                             <?php else: ?>
-                                                <span class="btn btn-secondary">Closed</span>
+                                                <span class="btn btn-success">Closed</span>
                                             <?php endif; ?>
                                         </td>
                                         <td>
@@ -121,6 +122,13 @@ endif;
                                         </td>
                                         <td>
                                             <span class="btn btn-primary"><?= $tickets->fullname ?></span>
+                                        </td>
+                                        <td>
+                                            <?php if ($status == 'closed'): ?>
+                                                <a href="#!" data-id="<?= $tickets->ticket_id ?>" data-bs-toggle="modal" data-bs-target="#changeStatus" class="btn-change-status btn btn-sm btn-primary">Update</a>
+                                            <?php else: ?>
+                                                ---
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                 <?php endwhile;
@@ -165,6 +173,35 @@ endif;
         </div>
     </div>
 
+    <!-- Modal Change Status -->
+    <div class="modal fade" id="changeStatus" tabindex="-1" aria-labelledby="changeStatusLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <form id="assign-again-form" class="w-100">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="changeStatusLabel">Assign to Developer</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <span id="showStatusMsg"></span>
+                        <div class="form-group">
+                            <label for="status" class="form-label">Status</label>
+                            <select name="status" id="status" class="form-select" required>
+                                <option value="" selected hidden>Select Status</option>
+                                <option value="progress">Open</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="c_status_ticket_id">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <?php include_once 'includes/footer.php'; ?>
     <?php include 'includes/external_js.php'; ?>
 
@@ -191,6 +228,32 @@ endif;
                     success: function(response) {
                         let res = JSON.parse(response);
                         $("#showDevMsg").html(res.msg);
+                        if (res.status == 'success') {
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1200);
+                        }
+                    }
+                });
+            });
+
+            $(document).on("click", ".btn-change-status", function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $("input[name='c_status_ticket_id']").val(id);
+            });
+
+            $("#assign-again-form").on("submit", function(e) {
+                e.preventDefault();
+                const formData = $(this).serialize();
+
+                $.ajax({
+                    url: "ajax/admin.php",
+                    method: "post",
+                    data: formData,
+                    success: function(response) {
+                        let res = JSON.parse(response);
+                        $("#showStatusMsg").html(res.msg);
                         if (res.status == 'success') {
                             setTimeout(() => {
                                 window.location.reload();

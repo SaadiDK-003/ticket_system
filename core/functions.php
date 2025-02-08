@@ -1,5 +1,11 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
 require_once 'database.php';
+require $config_path . 'phpMailer/vendor/autoload.php';
+
 
 // Check User is Loggedin or not
 function isLoggedin()
@@ -28,6 +34,20 @@ function login($email, $pwd)
         $result = '<h6 class="text-center alert alert-danger">Incorrect credentials, please check.</h6>';
     }
     return $result;
+}
+
+
+function generateRandomString($length = 32)
+{
+    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+
+    return $randomString;
 }
 
 // Registration
@@ -59,25 +79,58 @@ function register($POST)
                 //     $response = '<h6 class="text-center alert alert-danger">Password & Confirm Password do not match.</h6>';
                 // else :
                 $pwd = md5($pwd);
-                $insertQ = $db->query("INSERT INTO `users` (fullname,username,email,password,phone,role) VALUES('$fullName','$username','$email','$pwd','$phone','dev')");
-                if ($insertQ) {
-                    $bytes = openssl_random_pseudo_bytes(32);
-                    $hash = base64_encode($bytes);
-                    $db->query("UPDATE `token` SET `reg_token`='$hash' WHERE `id`='1'");
-                    $response = '<h6 class="text-center alert alert-success">' . $user_type_ . ' registered successfully.</h6>
+                if (sendMail($POST)) {
+                    $insertQ = $db->query("INSERT INTO `users` (fullname,username,email,password,phone,role) VALUES('$fullName','$username','$email','$pwd','$phone','dev')");
+                    if ($insertQ) {
+                        $hash = generateRandomString(32);
+                        // $hash = base64_encode($bytes);
+                        $db->query("UPDATE `token` SET `reg_token`='$hash' WHERE `id`='1'");
+                        $response = '<h6 class="text-center alert alert-success">' . $user_type_ . ' registered successfully.</h6>
                 <script>
                     setTimeout(function(){
                         window.location.href = "./login.php";
                     },1800);
                 </script>
                 ';
+                    }
                 }
+
             // endif;
             endif;
         endif;
     endif;
 
     return $response;
+}
+
+function sendMail($POST)
+{
+    $fullName = $POST['fullName'];
+    $sender = $POST['email'];
+    $mail = new PHPMailer();
+    $mail->isSMTP();
+
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'saad@mage4.com';
+    $mail->Password = 'lcygymqczzkmudrl';
+    $mail->Port = 587;
+    $mail->SMTPSecure = 'tls';
+
+    $mail->setFrom('info@sapfort.com', 'SAPFort');
+    $mail->addAddress($sender, $fullName);
+    $mail->Subject = 'SAPFort - Welcome' . $fullName;
+    $mail->msgHTML('
+    <h3>You can activate your account by clicking the link below.</h3>
+    <a href="' . SITE_URL . '/activate.php?mail=' . $sender . '">Activate Account</a>
+    ');
+
+    if (!$mail->send()) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 function profile_pic($POST, $FILE)

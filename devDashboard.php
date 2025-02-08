@@ -48,7 +48,7 @@ if ($userRole != 'dev') {
                                         <td><?= $dev_t->ticket_desc ?></td>
                                         <td>
                                             <?php if ($status == 'pending'): ?>
-                                                <span class="btn btn-warning">Pending</span>
+                                                <span class="btn btn-warning">Assigned</span>
                                             <?php elseif ($status == 'progress'): ?>
                                                 <span class="btn btn-info">Open</span>
                                             <?php else: ?>

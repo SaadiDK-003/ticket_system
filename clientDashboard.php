@@ -49,7 +49,7 @@ if ($userRole != 'client') {
                                             <?php if ($status == 'new'): ?>
                                                 <span class="btn btn-secondary">New</span>
                                             <?php elseif ($status == 'pending'): ?>
-                                                <span class="btn btn-warning">Pending</span>
+                                                <span class="btn btn-warning">Assigned</span>
                                             <?php elseif ($status == 'progress'): ?>
                                                 <span class="btn btn-info">Open</span>
                                             <?php else: ?>

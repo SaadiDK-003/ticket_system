@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2025 at 02:58 PM
+-- Generation Time: Feb 08, 2025 at 10:45 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -196,7 +196,7 @@ CREATE TABLE `token` (
 --
 
 INSERT INTO `token` (`id`, `reg_token`) VALUES
-(1, 'RymIkHxgdu5OZLhjMKG2j/Y0ecJEILZGMDcGUGR1Xu4=');
+(1, 'FXwg6rO8sz6STvOty6KMNKNww0HGDhRV');
 
 -- --------------------------------------------------------
 
@@ -224,7 +224,8 @@ INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `phone`, `password`,
 (2, 'Client 123', 'client', 'client@gmail.com', NULL, '4297f44b13955235245b2497399d7a93', 'client', '1'),
 (8, 'Dev 1', 'dev1', 'dev@gmail.com', '1234412512312', '4297f44b13955235245b2497399d7a93', 'dev', '1'),
 (9, 'Dev 2', 'dev2', 'dev2@gmail.com', NULL, '4297f44b13955235245b2497399d7a93', 'dev', '1'),
-(10, 'Client 111', 'client2', 'client111@gmail.com', NULL, '4297f44b13955235245b2497399d7a93', 'client', '1');
+(10, 'Client 111', 'client2', 'client111@gmail.com', NULL, '4297f44b13955235245b2497399d7a93', 'client', '1'),
+(11, 'test', 'testdev', 'testdev@gmail.com', '51235123123123', '0192023a7bbd73250516f069df18b500', 'dev', '1');
 
 --
 -- Indexes for dumped tables
@@ -293,13 +294,13 @@ ALTER TABLE `sub_categories`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `ticket_conversation`
 --
 ALTER TABLE `ticket_conversation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT for table `token`
@@ -311,7 +312,7 @@ ALTER TABLE `token`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

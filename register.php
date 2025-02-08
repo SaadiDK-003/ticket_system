@@ -29,6 +29,7 @@ if ($_GET['token'] != $token->reg_token) {
                 <?php
                 if (isset($_POST['email']) && isset($_POST['password'])):
                     echo register($_POST);
+                    sendMail($POST);
                 endif;
                 ?>
                 <form action="" method="post">

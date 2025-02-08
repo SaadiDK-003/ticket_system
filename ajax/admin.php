@@ -12,3 +12,15 @@ if (isset($_POST['dev']) && isset($_POST['ticket_id'])):
         echo json_encode(["status" => "error", "" => "<h6 class='alert alert-danger'>Something went wrong.</h6>"]);
     }
 endif;
+
+if (isset($_POST['status']) && isset($_POST['c_status_ticket_id'])):
+    $status = $_POST['status'];
+    $t_id = $_POST['c_status_ticket_id'];
+
+    $upd_t_Q = $db->query("UPDATE `tickets` SET `status`='$status' WHERE `id`='$t_id'");
+    if ($upd_t_Q) {
+        echo json_encode(["status" => "success", "msg" => "<h6 class='alert alert-success'>Ticket Updated Successfully.</h6>"]);
+    } else {
+        echo json_encode(["status" => "error", "" => "<h6 class='alert alert-danger'>Something went wrong.</h6>"]);
+    }
+endif;
